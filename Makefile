@@ -15,3 +15,15 @@ api-lint-fix: ## Lint and fix the api
 .PHONY: api-test
 api-test: ## Test the api
 	@docker compose run --rm api sh -c 'ENV=test pytest -vvv -s'
+
+.PHONY: frontend-lint
+frontend-lint: ## Lint the frontend
+	@cd frontend && cargo fmt --check; cargo clippy
+
+.PHONY: frontend-lint-fix
+frontend-lint-fix: ## Lint and fix the frontend
+	@cd frontend && cargo fmt ; cargo clippy --fix
+
+.PHONY: frontend-test
+frontend-test: ## Test the frontend
+	@cd frontend && cargo test
