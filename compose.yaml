@@ -1,0 +1,44 @@
+---
+# local developement only
+
+services:
+  api:
+    build:
+      context: ./api
+      target: dev
+    # necessary to retain permissions of our files when modifying them in the container (e.g. formatting)
+    user: "${UID:?Set UID env variable to your user id}"
+    volumes:
+      - ./api:/app
+      - ./api/pdbrc.py:/home/backend/.pdbrc.py
+    ports:
+      - "8000:8000"
+    environment:
+      - ENV=dev
+
+  frontend:
+    build:
+      context: ./frontend
+      target: dev
+    volumes:
+      - ./frontend:/app
+
+  caddy:
+    image: caddy:2.6-alpine
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    ports:
+      - "0.0.0.0:80:80"
+      - "0.0.0.0:443:443"
+    environment:
+      - DOMAIN_NAME=m426.local
+    networks:
+      default:
+        aliases:
+          - m426.local
+
+volumes:
+  caddy_data:
+  caddy_config:

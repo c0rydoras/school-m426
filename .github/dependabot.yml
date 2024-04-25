@@ -1,0 +1,88 @@
+---
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: daily
+      time: "12:00"
+      timezone: "Europe/Zurich"
+
+  - package-ecosystem: pip
+    directory: "/api"
+    schedule:
+      interval: daily
+      time: "12:00"
+      timezone: "Europe/Zurich"
+    commit-message:
+      prefix: chore
+      include: scope
+    open-pull-requests-limit: 5
+
+    groups:
+      testing:
+        patterns:
+          - "pytest"
+          - "pytest-*"
+          - "pdbpp"
+          - "requests-mock"
+
+      django:
+        patterns:
+          - "django*"
+          - "mozilla-django-oidc"
+          - "psycopg2-binary"
+          - "gunicorn"
+
+        exclude-patterns:
+          - "django-extensions"
+
+      python:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "pytest"
+          - "pytest-*"
+          - "pdbpp"
+          - "requests-mock"
+          - "django*"
+          - "mozilla-django-oidc"
+          - "psycopg2-binary"
+          - "ruff"
+          - "gunicorn"
+
+  - package-ecosystem: docker
+    directory: "/api"
+    schedule:
+      interval: daily
+      time: "12:00"
+      timezone: "Europe/Zurich"
+    commit-message:
+      prefix: chore
+      include: scope
+
+  - package-ecosystem: docker
+    directory: "/frontend"
+    schedule:
+      interval: daily
+      time: "12:00"
+      timezone: "Europe/Zurich"
+    commit-message:
+      prefix: chore
+      include: scope
+
+  - package-ecosystem: cargo
+    directory: "/frontend"
+    schedule:
+      interval: "daily"
+      time: "12:00"
+      timezone: "Europe/Zurich"
+    commit-message:
+      prefix: chore
+      include: scope
+    open-pull-requests-limit: 1
+
+    groups:
+      rust:
+        patterns:
+          - "*"

@@ -1,0 +1,33 @@
+---
+name: Backend
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set UID
+        run: echo "UID=$(id --user)" > .env
+      - name: Lint the backend code
+        run: make api-lint
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set UID
+        run: echo "UID=$(id --user)" > .env
+      - name: Build the container
+        run: docker compose up -d --build api
+      - name: Run backend tests
+        run: make api-test

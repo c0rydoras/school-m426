@@ -1,0 +1,52 @@
+---
+name: Schedule
+
+on:
+  schedule:
+    - cron: 15 11 * * *
+  workflow_dispatch:
+
+jobs:
+  scan-api:
+    name: Scan api image
+    runs-on: ubuntu-latest
+    permissions:
+      actions: none
+      checks: none
+      contents: none
+      deployments: none
+      issues: none
+      packages: write
+      pull-requests: none
+      repository-projects: none
+      security-events: write
+      statuses: none
+      id-token: write # needed for cosign attest
+    steps:
+      - uses: adfinis/container-scanning-action@v0.2.3
+        with:
+          image-ref: ghcr.io/${{ github.repository }}/api
+          token: ${{ secrets.GITHUB_TOKEN }}
+          attest: true
+
+  scan-frontend:
+    name: Scan frontend image
+    runs-on: ubuntu-latest
+    permissions:
+      actions: none
+      checks: none
+      contents: none
+      deployments: none
+      issues: none
+      packages: write
+      pull-requests: none
+      repository-projects: none
+      security-events: write
+      statuses: none
+      id-token: write # needed for cosign attest
+    steps:
+      - uses: adfinis/container-scanning-action@v0.2.3
+        with:
+          image-ref: ghcr.io/${{ github.repository }}/frontend
+          token: ${{ secrets.GITHUB_TOKEN }}
+          attest: true
