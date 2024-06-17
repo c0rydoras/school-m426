@@ -97,7 +97,7 @@ jobs:
 
       - name: Build and Push Docker Image
         if: needs.semrel.outputs.version != ''
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         id: docker
         with:
           context: ./api/
@@ -177,7 +177,7 @@ jobs:
 
       - name: Build and Push Docker Image
         if: needs.semrel.outputs.version != ''
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         id: docker
         with:
           context: ./frontend/
